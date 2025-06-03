@@ -9,7 +9,7 @@ export const createProduct = async (req, res) => {
     const { name, price} = req.body;
 
     
-        const newProduct = new Product({ name, price, image: [] });
+        const newProduct = new Product({ name, price, });
     const saved = await newProduct.save();
 
         res.status(201).json({saved, message: "Product created successfully"});
@@ -19,14 +19,16 @@ export const createProduct = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 export const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find().populate("image");
     res.status(200).json(products);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
 export const uploadProductImage = async (req, res) => {
   try {
     const { productId } = req.params;
@@ -38,7 +40,7 @@ export const uploadProductImage = async (req, res) => {
       async (error, result) => {
         if (error) return res.status(500).json({ error });
 
-        const newImage = await Image.create({ imageUrl: result.secure_url, thumbnail, product: productId });
+        const newImage = await Image.create({ imageUrl: result.secure_url, thumbnail: true, product: productId });
         product.image = newImage._id;
         await product.save();
 
@@ -75,13 +77,13 @@ export const updateProduct = async (req, res) => {
 
 export const deleteProduct = async (req, res) => {
     try {
-    const { id } = req.params;
-    const product = await Product.findById(id);
+    const { productId } = req.params;
+    const product = await Product.findById(productId);
     if (!product) return res.status(404).json({ message: "Product not found" });
 
     await Image.deleteMany({ _id: { $in: product.image } });
-    await ProductDetail.deleteMany({ productId: id });
-    await Product.findByIdAndDelete(id);
+    await ProductDetail.deleteMany({ productId });
+    await Product.findByIdAndDelete(productId);
 
     res.status(200).json({ message: "Product and associated data deleted" });
   }catch (error) {

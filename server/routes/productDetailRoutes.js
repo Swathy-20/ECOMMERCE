@@ -10,6 +10,6 @@ router.post("/create-product-detail", upload.array('images', 5),authAdmin, creat
 router.get("/getproductById/:productId",getProductDetailByProductId);
 router.put("/update-product-detail/:productId", upload.array('images', 5),authAdmin,updateProductDetail);
 router.delete("/delete-product-detail/:productId", authAdmin, deleteProductDetail);
-router.post("/images/:id", upload.array('images', 5), authAdmin, uploadProductDetailImages)
+router.post("/images/:productId", upload.array('images', 5), authAdmin, uploadProductDetailImages)
 
 export { router as productDetailRouter };
