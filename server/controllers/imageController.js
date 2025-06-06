@@ -1,6 +1,6 @@
 // controllers/imageController.js
 import  { cloudinaryInstance } from '../config/cloudinary.js';
-import {Image} from '../models/Image.js';
+import {Image} from '../models/imageModel.js';
 import streamifier from 'streamifier';
 
 // Upload image to Cloudinary and save info to DB
@@ -35,6 +35,18 @@ export const uploadImage = async (req, res) => {
     streamifier.createReadStream(file.buffer).pipe(result);
   } catch (err) {
     res.status(500).json({ message: 'Error uploading image', error: err });
+  }
+};
+
+export const getImageById = async (req, res) => {
+  try {
+    const image = await Image.findById(req.params.id);
+    if (!image) {
+      return res.status(404).json({ message: 'Image not found' });
+    }
+    res.status(200).json(image);
+  } catch (err) {
+    res.status(500).json({ message: 'Server Error' });
   }
 };
 
