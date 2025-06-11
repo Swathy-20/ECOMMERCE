@@ -6,6 +6,7 @@ import { productDetailRouter } from "./productDetailRoutes.js";
 import { categoryRouter } from "./categoryRoutes.js";
 import { wishlistRouter } from "./wishlistRoutes.js";
 import { imageRouter } from "./imageRoutes.js";
+import { paymentRouter } from "./paymentRoutes.js";
 
 const router = e.Router()
 
@@ -17,6 +18,7 @@ router.use("/product-detail",productDetailRouter)
 router.use("/category", categoryRouter);
 router.use("/wishlist", wishlistRouter);
 router.use("/image", imageRouter);
+router.use("/payment",paymentRouter)
 
 
 export {router as apiRouter}

@@ -1,75 +1,39 @@
 import React, { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import {axiosInstance} from "../../config/axioInstance";
+import { useNavigate } from "react-router-dom";
+import { axiosInstance } from "../../config/axioInstance";
 
-export const Signup = () => {
+export const AdminSignup = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const isAdminSignup = location.pathname.includes("admin");
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     mobile: "",
     password: "",
     confirmPassword: "",
+    role: "admin", // or "seller"
   });
-
-  //const [profilePic, setProfilePic] = useState(null);
   const [error, setError] = useState("");
 
-  const handleChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-//   const handleFileChange = (e) => {
-//     setProfilePic(e.target.files[0]);
-//   };
+  const handleChange = (e) =>
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-
-    const submissionData = new FormData();
-    for (let key in formData) {
-      submissionData.append(key, formData[key]);
-    }
-
-    // if (profilePic) {
-    //   submissionData.append("profilePic", profilePic);
-    // }
-
-    if (isAdminSignup) {
-      submissionData.append("role", "admin"); // optional if your backend auto assigns
-    }
+    setError("");
 
     try {
-      const endpoint = isAdminSignup
-        ? "/admin/signup"
-        : "/user/signup";
-
-      await axiosInstance.post(endpoint, submissionData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      const res = await axiosInstance.post("/admin/signup", formData, {
+        withCredentials: true,
       });
-
-      navigate("/login");
+      localStorage.setItem("authAdmin", JSON.stringify(res.data));
+      navigate("/admin/profile");
     } catch (err) {
-      setError(
-        err.response?.data?.message || "Signup failed. Please try again."
-      );
+      setError(err.response?.data?.message || "Signup failed");
     }
   };
 
-  return (
+
+return (
     <div className="min-h-screen flex flex-col justify-between bg-white text-gray-900">
      <main className="flex-1 flex items-center justify-center px-4 py-12">
       <div className="flex w-full max-w-5xl flex-col lg:flex-row bg-white shadow-md rounded-lg overflow-hidden">

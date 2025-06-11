@@ -118,7 +118,7 @@ export const ProductDetail = () => {
           {/* Ratings with Star Icon */}
           <div className="flex items-center mb-4 text-yellow-500">
         <AiFillStar />
-        <span className="ml-1 text-black">{detail.ratings} star</span>
+        <span className="ml-1 text-black">{detail.ratings} </span>
       </div>
           {/* Color Options */}
           <div className="mb-4">
@@ -161,6 +161,7 @@ export const ProductDetail = () => {
             <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded shadow">
               Add to Cart
             </button>
+             
              <button
               style={{ zIndex: 10 }}
           onClick={handleWishlist}
@@ -184,6 +185,7 @@ export const ProductDetail = () => {
           {/* Additional Info */}
           {showMore && (
             <div className="mt-4 text-sm space-y-1">
+            <p><strong>Category:</strong> {detail.category?.name}</p>
               <p><strong>Brand:</strong> {detail.brand}</p>
               <p><strong>Stock:</strong> {detail.stock}</p>
               <p><strong>Return Policy:</strong> {detail.returnPolicy}</p>

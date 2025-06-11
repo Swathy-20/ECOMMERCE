@@ -1,50 +1,32 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { axiosInstance } from "../../config/axioInstance"; 
+import { axiosInstance } from "../../config/axioInstance";
+import { Header } from "../../components/common/Header";
 
-export const Login = () => {
+export const AdminLogin = () => {
   const navigate = useNavigate();
-
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
 
-  const handleChange = (e) => {
-        setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-
-  };
+  const handleChange = (e) =>
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-
     try {
-      // Example API request (update URL for your backend)
-      const userRes = await axiosInstance.post("/user/login", formData,{withCredentials: true});
-      console.log("User login success:", userRes.data);
-      localStorage.setItem("authUser", JSON.stringify({ user: userRes.data }));
-      
-
-      // Navigate after successful login
-      navigate("/");
+      const res = await axiosInstance.post("/admin/login", formData, {
+        withCredentials: true,
+      });
+      localStorage.setItem("authAdmin", JSON.stringify(res.data));
+      navigate("/admin/dashboard");
     } catch (err) {
-      try {
-        const adminRes = await axiosInstance.post("/admin/login", formData,{withCredentials: true});
-      console.log("Admin login success:", adminRes.data);
-      localStorage.setItem("authUser", JSON.stringify({ user: adminRes.data }));
-      navigate("/");
-      } catch (error) {
-        console.error("Login error:", error.response || error.message);
-        setError("Invalid credentials. Please try again.");
-      }
+      setError("Invalid credentials");
     }
   };
 
   return (
     <div className="min-h-screen flex flex-col justify-between bg-white text-gray-900">
+    <Header/>
     <main className="flex-1 flex items-center justify-center px-4 py-12">
 
 
@@ -115,4 +97,3 @@ export const Login = () => {
 </div>
 );
 };
-

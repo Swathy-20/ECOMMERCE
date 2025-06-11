@@ -58,7 +58,9 @@ export const getProductDetailByProductId = async (req, res) => {
     const { productId } = req.params;
     const detail = await ProductDetail.findOne({ productId }
     
-    ).populate("productId","name price");
+    )
+     .populate('category', 'name')
+     .populate("productId","name price");
     if (!detail) {
       return res.status(404).json({ message: 'Product Detail not found' });
     }

@@ -48,7 +48,7 @@ export const Footer = () => {
 
       {/* Bottom Line */}
       <div className="mt-10 border-t border-neutral-700 pt-6 text-sm text-neutral-400 text-center">
-        © {new Date().getFullYear()} YourBrand. All rights reserved.
+        © {new Date().getFullYear()} ShopNest. All rights reserved.
       </div>
     </footer>
   );

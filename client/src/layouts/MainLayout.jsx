@@ -30,6 +30,7 @@ export const MainLayout = () => {
           },
           withCredentials: true,
         });
+        console.log("✅ check-user response:", response.data);
         dispatch(saveUser(response.data));
       } catch (error) {
         dispatch(clearUser());
@@ -66,14 +67,13 @@ export const MainLayout = () => {
         checkUser();
       }
     }, [location.pathname]);
+    useEffect(() => {
+  console.log("Redux user state:", user);
+}, [user]);
   
     return isLoading ? null : (
       <div>
-        {user?.isUserAuth ? (
-          isAdminRoute ? <AdminHeader /> : <UserHeader />
-        ) : (
-          <Header />
-        )}
+        {!isAdminRoute && (user?.isUserAuth ? <UserHeader /> : <Header />)}
   
         <div className="min-h-96">
           <Outlet />
@@ -82,4 +82,3 @@ export const MainLayout = () => {
       </div>
     );
   };
-  

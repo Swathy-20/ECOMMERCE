@@ -6,10 +6,14 @@ import streamifier from "streamifier";
 
 export const createProduct = async (req, res) => {
   try {
-    const { name, price} = req.body;
+    const { name, price, category } = req.body;
 
     
-        const newProduct = new Product({ name, price, });
+        const newProduct = new Product({ 
+          name, 
+          price, 
+          category: category || 'other'
+        });
     const saved = await newProduct.save();
 
         res.status(201).json({saved, message: "Product created successfully"});
@@ -96,6 +100,25 @@ export const getProductByProductId = async (req, res) => {
     const detail = await Product.findOne({ _id: productId });
     if (!detail) return res.status(404).json({ message: 'Product not found' });
     res.status(200).json(detail);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const getProductsByCategory = async (req, res) => {
+  try {
+    const { categoryName } = req.params;
+    const products = await Product.find({ category: categoryName }).populate("image");
+    res.status(200).json(products);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const getCategories = async (req, res) => {
+  try {
+    const categories = await Product.distinct("category");
+    res.status(200).json(categories);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

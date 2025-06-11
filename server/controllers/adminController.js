@@ -2,6 +2,27 @@ import { generateToken } from "../config/token.js";
 import { Admin } from "../models/adminModel.js";
 import bcrypt from "bcrypt";
 import { User } from "../models/userModel.js";
+import { Product } from "../models/productModel.js";
+
+export const getStats = async (req, res) => {
+  try {
+    const users = await User.countDocuments();
+    const products = await Product.countDocuments();
+    
+    res.json({
+      stats: {
+        users,
+        products,
+        orders: 0,    // Placeholder for future implementation
+        revenue: 0    // Placeholder for future implementation
+      },
+      recentOrders: [],  // Placeholder
+      salesData: []      // Placeholder
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
 
 export const registerAdmin = async (req, res) => {
   const { name, email, mobile, password, confirmPassword,role } = req.body;
@@ -97,3 +118,12 @@ export const deleteUser = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+export const checkAdmin = async (req, res, next) => {
+    try {
+
+        res.json({  message: "admin autherized" });
+    } catch (error) {
+        res.status(error.statusCode || 500).json({ message: error.message || "Internal server" });
+    }
+};
+

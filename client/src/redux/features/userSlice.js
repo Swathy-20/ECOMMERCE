@@ -14,6 +14,7 @@ export const userSlice = createSlice({
         saveUser: (state, action) => {
             const role = action.payload.role;
             state.role = role;
+            state.userData = action.payload;
             if (role === "user") {
                 state.isUserAuth = true;
                 state.isAdminAuth = false;

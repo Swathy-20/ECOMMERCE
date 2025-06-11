@@ -1,1 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wdth,wght@1,87.5,100..900&display=swap');
 @import "tailwindcss";
+
+body {
+  font-family: 'Noto Serif', serif;
+}

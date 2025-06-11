@@ -90,3 +90,25 @@ export const updateUserProfile = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+export const checkUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+     console.log("✅ User from DB:", user);
+
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role || "user", 
+    });
+  } catch (error) {
+    console.error("❌ Error checking user:", error.message);
+    res
+      .status(error.statusCode || 500)
+      .json({ message: error.message || "Internal server error" });
+  }
+};
+

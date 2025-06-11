@@ -1,8 +1,6 @@
 import {Category} from '../models/categoryModel.js';
 
-// @desc    Create a new category
-// @route   POST /api/categories
-// @access  Admin
+
 export const createCategory = async (req, res) => {
   try {
     const { name } = req.body;
@@ -27,10 +25,6 @@ export const createCategory = async (req, res) => {
     res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };
-
-// @desc    Get all categories
-// @route   GET /api/categories
-// @access  Public
 export const getCategories = async (req, res) => {
   try {
     const categories = await Category.find();
@@ -40,9 +34,6 @@ export const getCategories = async (req, res) => {
   }
 };
 
-// @desc    Get single category by ID
-// @route   GET /api/categories/:id
-// @access  Public
 export const getCategoryById = async (req, res) => {
   try {
     const category = await Category.findById(req.params.id);
@@ -56,9 +47,6 @@ export const getCategoryById = async (req, res) => {
   }
 };
 
-// @desc    Update category
-// @route   PUT /api/categories/:id
-// @access  Admin
 export const updateCategory = async (req, res) => {
   try {
     const { name, image } = req.body;
@@ -79,8 +67,7 @@ export const updateCategory = async (req, res) => {
   }
 };
 
-// @desc    Delete category
-// @route   DELETE /api/categories/:id
+
 
 export const deleteCategory = async (req, res) => {
   try {
